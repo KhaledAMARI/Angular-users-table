@@ -1,0 +1,190 @@
+<div class="container mx-auto mt-4">
+  <h2 class="text-center text-2xl font-bold mb-4">Employer-data-table</h2>
+
+  <!-- Dropdown for selecting items per page -->
+  <div class="mb-4">
+    <label for="itemsPerPage()" class="mr-2">Items per page:</label>
+    <select
+      id="itemsPerPage()"
+      (change)="updateItemsPerPage($event)"
+      class="border rounded p-1"
+      [value]="itemsPerPage()"
+    >
+      <option *ngFor="let option of itemsOptions" [value]="option">
+        {{ option }}
+      </option>
+    </select>
+  </div>
+
+  <table class="min-w-full bg-white border border-gray-300">
+    <thead class="bg-gray-800 text-white">
+      <tr>
+        <th (click)="sortBy('id')" class="cursor-pointer py-2 px-4 border-b">
+          ID
+          <span
+            class="sort-arrow"
+            [ngClass]="{
+              asc: sortColumn === 'id' && sortDirection === 'asc',
+              desc: sortColumn === 'id' && sortDirection === 'desc'
+            }"
+          ></span>
+        </th>
+        <th
+          (click)="sortBy('firstName')"
+          class="cursor-pointer py-2 px-4 border-b"
+        >
+          First Name
+          <span
+            class="sort-arrow"
+            [ngClass]="{
+              asc: sortColumn === 'firstName' && sortDirection === 'asc',
+              desc: sortColumn === 'firstName' && sortDirection === 'desc'
+            }"
+          ></span>
+        </th>
+        <th
+          (click)="sortBy('lastName')"
+          class="cursor-pointer py-2 px-4 border-b"
+        >
+          Last Name
+          <span
+            class="sort-arrow"
+            [ngClass]="{
+              asc: sortColumn === 'lastName' && sortDirection === 'asc',
+              desc: sortColumn === 'lastName' && sortDirection === 'desc'
+            }"
+          ></span>
+        </th>
+        <th (click)="sortBy('age')" class="cursor-pointer py-2 px-4 border-b">
+          Age
+          <span
+            class="sort-arrow"
+            [ngClass]="{
+              asc: sortColumn === 'age' && sortDirection === 'asc',
+              desc: sortColumn === 'age' && sortDirection === 'desc'
+            }"
+          ></span>
+        </th>
+        <th (click)="sortBy('dob')" class="cursor-pointer py-2 px-4 border-b">
+          DOB
+          <span
+            class="sort-arrow"
+            [ngClass]="{
+              asc: sortColumn === 'dob' && sortDirection === 'asc',
+              desc: sortColumn === 'dob' && sortDirection === 'desc'
+            }"
+          ></span>
+        </th>
+        <th (click)="sortBy('email')" class="cursor-pointer py-2 px-4 border-b">
+          Email
+          <span
+            class="sort-arrow"
+            [ngClass]="{
+              asc: sortColumn === 'email' && sortDirection === 'asc',
+              desc: sortColumn === 'email' && sortDirection === 'desc'
+            }"
+          ></span>
+        </th>
+        <th
+          (click)="sortBy('salary')"
+          class="cursor-pointer py-2 px-4 border-b"
+        >
+          Salary
+          <span
+            class="sort-arrow"
+            [ngClass]="{
+              asc: sortColumn === 'salary' && sortDirection === 'asc',
+              desc: sortColumn === 'salary' && sortDirection === 'desc'
+            }"
+          ></span>
+        </th>
+        <th
+          (click)="sortBy('address')"
+          class="cursor-pointer py-2 px-4 border-b"
+        >
+          Address
+          <span
+            class="sort-arrow"
+            [ngClass]="{
+              asc: sortColumn === 'address' && sortDirection === 'asc',
+              desc: sortColumn === 'address' && sortDirection === 'desc'
+            }"
+          ></span>
+        </th>
+        <th
+          (click)="sortBy('contactNumber')"
+          class="cursor-pointer py-2 px-4 border-b"
+        >
+          Contact Number
+          <span
+            class="sort-arrow"
+            [ngClass]="{
+              asc: sortColumn === 'contactNumber' && sortDirection === 'asc',
+              desc: sortColumn === 'contactNumber' && sortDirection === 'desc'
+            }"
+          ></span>
+        </th>
+        <th class="py-2 px-4 border-b">Image</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of paginatedUsers()" class="hover:bg-gray-100">
+        <td class="py-2 px-4 border-b">{{ user.id }}</td>
+        <td class="py-2 px-4 border-b truncate max-w-xs">
+          {{ user.firstName }}
+        </td>
+        <td class="py-2 px-4 border-b truncate max-w-xs">
+          {{ user.lastName }}
+        </td>
+        <td class="py-2 px-4 border-b">{{ user.age }}</td>
+        <td class="py-2 px-4 border-b">{{ user.dob }}</td>
+        <td class="py-2 px-4 border-b truncate max-w-xs">{{ user.email }}</td>
+        <td class="py-2 px-4 border-b">{{ user.salary | currency }}</td>
+        <td class="py-2 px-4 border-b truncate max-w-xs">{{ user.address }}</td>
+        <td class="py-2 px-4 border-b">{{ user.contactNumber }}</td>
+        <td class="py-2 px-4 border-b w-24">
+          <img
+            [src]="user.imageUrl"
+            alt="{{ user.firstName }}"
+            class="rounded-full w-20 h-20"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination Controls -->
+  <nav aria-label="Page navigation" class="mt-4">
+    <ul class="flex justify-center space-x-2">
+      <li [class.disabled]="currentPage === 1">
+        <button
+          (click)="changePage(currentPage - 1)"
+          class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+          [disabled]="currentPage === 1"
+        >
+          &laquo; Previous
+        </button>
+      </li>
+      <li *ngFor="let page of [].constructor(totalPages); let i = index">
+        <button
+          (click)="changePage(i + 1)"
+          class="px-4 py-2 rounded"
+          [class.bg-blue-500]="currentPage === i + 1"
+          [class.text-white]="currentPage === i + 1"
+          [class.bg-gray-300]="currentPage !== i + 1"
+        >
+          {{ i + 1 }}
+        </button>
+      </li>
+      <li [class.disabled]="currentPage === totalPages">
+        <button
+          (click)="changePage(currentPage + 1)"
+          class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+          [disabled]="currentPage === totalPages"
+        >
+          Next &raquo;
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>
