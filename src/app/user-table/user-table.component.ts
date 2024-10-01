@@ -31,12 +31,16 @@ export class UserTableComponent implements OnInit {
     });
   }
 
+  deleteUser(user: any) {
+    this.users = this.users.filter((u: any) => u.id !== user.id);
+  };
+
   // Get the users for the current page
-  paginatedUsers() {
+  paginatedUsers = computed(() => {
     const startIndex = computed(() => (this.currentPage - 1) * this.itemsPerPage());
-    const endIndex = computed(() => startIndex() + this.itemsPerPage());//+
+    const endIndex = computed(() => startIndex() + this.itemsPerPage());
     return this.users.slice(startIndex(), endIndex());
-  }
+  });
 
   // // Sort users based on the selected column and direction
   // sortUsers(users: any[]) {
@@ -53,14 +57,12 @@ export class UserTableComponent implements OnInit {
 
   // Change page
   changePage(page: number) {
-    if (page < 1 || page > this.totalPages) return; // Prevent out-of-bounds
+    if (page < 1 || page > this.totalPages()) return; // Prevent out-of-bounds
     this.currentPage = page;
   }
 
   // Get total pages
-  get totalPages() {
-    return Math.ceil(this.users.length / this.itemsPerPage());
-  }
+  totalPages = computed(() => Math.ceil(this.users.length / this.itemsPerPage()));
 
   // Update items per page
   updateItemsPerPage(event: Event) {
