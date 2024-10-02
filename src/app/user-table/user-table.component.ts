@@ -14,7 +14,7 @@ export class UserTableComponent implements OnInit, DoCheck {
   currentPage = signal<number>(1); // Current page number
   itemsOptions: number[] = [10, 15, 20]; // Options for items per page
   itemsPerPage = signal<number>(10); // Default items per page
-  sortColumn: string = ''; // Column to sort by
+  sortColumn = signal<string>(""); // Column to sort by
   sortDirection = signal<'asc' | 'desc'> ('asc'); // Sort direction
   searchTerm = signal<string>("");
 
@@ -26,6 +26,7 @@ export class UserTableComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
       console.log('changes happened!');
+      console.log("🚀 ~ UserTableComponent ~ sortBy ~ this.sortDirection:", this.sortDirection())
   }
 
   fetchData() {
@@ -95,13 +96,13 @@ export class UserTableComponent implements OnInit, DoCheck {
 
   // Sort by column
   sortBy(column: string) {
-    if (this.sortColumn === column) {
+    if (this.sortColumn() === column) {
       // If the same column is clicked, toggle the sort direction
       this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
     } else {
       // Set the new column and default to ascending
-      this.sortColumn = column;
-      this.sortDirection.set('asc');
+      this.sortColumn.set(column);
+      // this.sortDirection.set('asc');
     }
   }
 }

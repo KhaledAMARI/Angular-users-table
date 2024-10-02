@@ -34,8 +34,8 @@
           <span
             class="sort-arrow"
             [ngClass]="{
-              asc: sortColumn === 'id' && sortDirection() === 'asc',
-              desc: sortColumn === 'id' && sortDirection() === 'desc'
+              asc: sortColumn() === 'id' && sortDirection() === 'asc',
+              desc: sortColumn() === 'id' && sortDirection() === 'desc'
             }"
           ></span>
         </th>
@@ -47,8 +47,8 @@
           <span
             class="sort-arrow"
             [ngClass]="{
-              asc: sortColumn === 'firstName' && sortDirection() === 'asc',
-              desc: sortColumn === 'firstName' && sortDirection() === 'desc'
+              asc: sortColumn() === 'firstName' && sortDirection() === 'asc',
+              desc: sortColumn() === 'firstName' && sortDirection() === 'desc'
             }"
           ></span>
         </th>
@@ -60,8 +60,8 @@
           <span
             class="sort-arrow"
             [ngClass]="{
-              asc: sortColumn === 'lastName' && sortDirection() === 'asc',
-              desc: sortColumn === 'lastName' && sortDirection() === 'desc'
+              asc: sortColumn() === 'lastName' && sortDirection() === 'asc',
+              desc: sortColumn() === 'lastName' && sortDirection() === 'desc'
             }"
           ></span>
         </th>
@@ -70,8 +70,8 @@
           <span
             class="sort-arrow"
             [ngClass]="{
-              asc: sortColumn === 'age' && sortDirection() === 'asc',
-              desc: sortColumn === 'age' && sortDirection() === 'desc'
+              asc: sortColumn() === 'age' && sortDirection() === 'asc',
+              desc: sortColumn() === 'age' && sortDirection() === 'desc'
             }"
           ></span>
         </th>
@@ -80,8 +80,8 @@
           <span
             class="sort-arrow"
             [ngClass]="{
-              asc: sortColumn === 'dob' && sortDirection() === 'asc',
-              desc: sortColumn === 'dob' && sortDirection() === 'desc'
+              asc: sortColumn() === 'dob' && sortDirection() === 'asc',
+              desc: sortColumn() === 'dob' && sortDirection() === 'desc'
             }"
           ></span>
         </th>
@@ -90,8 +90,8 @@
           <span
             class="sort-arrow"
             [ngClass]="{
-              asc: sortColumn === 'email' && sortDirection() === 'asc',
-              desc: sortColumn === 'email' && sortDirection() === 'desc'
+              asc: sortColumn() === 'email' && sortDirection() === 'asc',
+              desc: sortColumn() === 'email' && sortDirection() === 'desc'
             }"
           ></span>
         </th>
@@ -103,8 +103,8 @@
           <span
             class="sort-arrow"
             [ngClass]="{
-              asc: sortColumn === 'salary' && sortDirection() === 'asc',
-              desc: sortColumn === 'salary' && sortDirection() === 'desc'
+              asc: sortColumn() === 'salary' && sortDirection() === 'asc',
+              desc: sortColumn() === 'salary' && sortDirection() === 'desc'
             }"
           ></span>
         </th>
@@ -116,8 +116,8 @@
           <span
             class="sort-arrow"
             [ngClass]="{
-              asc: sortColumn === 'address' && sortDirection() === 'asc',
-              desc: sortColumn === 'address' && sortDirection() === 'desc'
+              asc: sortColumn() === 'address' && sortDirection() === 'asc',
+              desc: sortColumn() === 'address' && sortDirection() === 'desc'
             }"
           ></span>
         </th>
@@ -129,8 +129,10 @@
           <span
             class="sort-arrow"
             [ngClass]="{
-              asc: sortColumn === 'contactNumber' && sortDirection() === 'asc',
-              desc: sortColumn === 'contactNumber' && sortDirection() === 'desc'
+              asc:
+                sortColumn() === 'contactNumber' && sortDirection() === 'asc',
+              desc:
+                sortColumn() === 'contactNumber' && sortDirection() === 'desc'
             }"
           ></span>
         </th>
