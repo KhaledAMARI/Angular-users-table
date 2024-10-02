@@ -48,6 +48,18 @@ export class UserTableComponent implements OnInit, DoCheck {
   paginatedUsers = computed(() => {
     const startIndex = computed(() => (this.currentPage() - 1) * this.itemsPerPage());
     const endIndex = computed(() => startIndex() + this.itemsPerPage());
+    if (this.searchTerm()) {
+      return this.users().filter(user => (
+        user?.firstName?.toLowerCase().includes(this.searchTerm().toLowerCase()) ||
+        user?.lastName?.toLowerCase().includes(this.searchTerm().toLowerCase()) ||
+        user?.dob?.toLowerCase().includes(this.searchTerm().toLowerCase()) ||
+        user?.email?.toLowerCase().includes(this.searchTerm().toLowerCase()) ||
+        user?.address?.toLowerCase().includes(this.searchTerm().toLowerCase()) ||
+        String(user?.contactNumber)?.toLowerCase().includes(this.searchTerm().toLowerCase()) ||
+        String(user?.id)?.toLowerCase().includes(this.searchTerm().toLowerCase()) ||
+        String(user?.age)?.toLowerCase().includes(this.searchTerm().toLowerCase())
+      )).slice(startIndex(), endIndex());
+    }
     return this.users().slice(startIndex(), endIndex());
   });
 
