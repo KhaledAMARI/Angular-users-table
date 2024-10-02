@@ -7,16 +7,17 @@
       (keyup)="handleGlobalSearch($event)"
       [value]="searchTerm()"
       placeholder="Search users..."
+      class="border rounded-lg p-2 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:scale-105"
     />
-    <span>{{ searchTerm() }}</span>
   </div>
   <!-- Dropdown for selecting items per page -->
-  <div class="mb-4">
+  <div class="mb-4 mt-4">
+    <!-- Added mt-4 for margin-top -->
     <label for="itemsPerPage()" class="mr-2">Items per page:</label>
     <select
       id="itemsPerPage()"
       (change)="updateItemsPerPage($event)"
-      class="border rounded p-1"
+      class="border rounded-lg p-2 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:scale-105"
       [value]="itemsPerPage()"
     >
       <option *ngFor="let option of itemsOptions" [value]="option">
