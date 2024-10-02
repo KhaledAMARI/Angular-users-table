@@ -1,11 +1,12 @@
-import { Component, computed, DoCheck, effect, OnInit, signal } from '@angular/core';
+import { Component, computed, DoCheck, OnInit, signal } from '@angular/core'; // Add FormBuilder
 import { ApiService } from '../api.service';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './user-table.component.html',
   styleUrl: './user-table.component.scss'
 })
@@ -17,8 +18,21 @@ export class UserTableComponent implements OnInit, DoCheck {
   sortColumn = signal<string>(""); // Column to sort by
   sortDirection = signal<'asc' | 'desc'> ('asc'); // Sort direction
   searchTerm = signal<string>("");
+  userForm: FormGroup; // Declare FormGroup
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private fb: FormBuilder) {
+    this.userForm = this.fb.group({ // Initialize FormGroup
+      id: [''],
+      firstName: [''],
+      lastName: [''],
+      age: [''],
+      dob: [''],
+      email: [''],
+      salary: [''],
+      address: [''],
+      contactNumber: [''],
+    });
+  }
 
   async ngOnInit() {
     await this.fetchData();
@@ -26,7 +40,6 @@ export class UserTableComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
       console.log('changes happened!');
-      console.log("🚀 ~ UserTableComponent ~ sortBy ~ this.sortDirection:", this.sortDirection())
   }
 
   fetchData() {
@@ -88,7 +101,6 @@ export class UserTableComponent implements OnInit, DoCheck {
 
   // Update items per page
   updateItemsPerPage(event: Event) {
-    console.log("🚀 ~ UserTableComponent ~ updateItemsPerPage ~ event:", event)
     const selectElement = event.target as HTMLSelectElement;
     this.itemsPerPage.set(Number(selectElement.value));
     this.currentPage.set(1); // Reset to the first page when items per page changes
@@ -104,5 +116,38 @@ export class UserTableComponent implements OnInit, DoCheck {
       this.sortColumn.set(column);
       // this.sortDirection.set('asc');
     }
+  }
+
+  isModalOpen = false;
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+
+  submitForm() {
+    const newUser = {
+      id: Number(this.userForm.get('id')?.value),
+      firstName: this.userForm.get('firstName')?.value,
+      lastName: this.userForm.get('lastName')?.value,
+      age: Number(this.userForm.get('age')?.value),
+      dob: this.userForm.get('dob')?.value,
+      email: this.userForm.get('email')?.value,
+      salary: Number(this.userForm.get('salary')?.value),
+      address: this.userForm.get('address')?.value,
+      contactNumber: this.userForm.get('contactNumber')?.value,
+      imageUrl: '',
+    };
+    console.log("🚀 ~ UserTableComponent ~ submitForm ~ newUser:", newUser)
+
+    // Insert the new user at the first index
+    this.users.set([newUser, ...this.users()]);
+
+    // Close the modal after submission
+    this.closeModal();
+    this.userForm.reset();
   }
 }
