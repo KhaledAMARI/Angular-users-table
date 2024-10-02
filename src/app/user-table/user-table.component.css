@@ -1,8 +1,8 @@
 .sort-arrow {
-    display: inline-block;
-    width: 10px;
+  display: inline flow-root list-item;
+    width: 7px;
     height: 10px;
-    margin-left: 5px;
+    margin-left: 2px;
     background-color: white;
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   }
