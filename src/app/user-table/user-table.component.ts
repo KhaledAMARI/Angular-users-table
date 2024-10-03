@@ -15,10 +15,11 @@ export class UserTableComponent implements OnInit, DoCheck {
   currentPage = signal<number>(1); // Current page number
   itemsOptions: number[] = [10, 15, 20]; // Options for items per page
   itemsPerPage = signal<number>(10); // Default items per page
-  sortColumn = signal<string>(""); // Column to sort by
+  sortColumn = signal<string>("id"); // Column to sort by
   sortDirection = signal<'asc' | 'desc'> ('asc'); // Sort direction
   searchTerm = signal<string>("");
   userForm: FormGroup; // Declare FormGroup
+  tableHeaders: string[] = ['id', 'firstName', 'lastName', 'age', 'dob', 'email', 'salary', 'address', 'contactNumber'];
 
   constructor(private apiService: ApiService, private fb: FormBuilder) {
     this.userForm = this.fb.group({ // Initialize FormGroup
@@ -78,17 +79,21 @@ export class UserTableComponent implements OnInit, DoCheck {
   });
 
   // Sort users() based on the selected column and direction
-  // sortUsers(users(): any[]) {
-  //   if (!this.sortColumn) return users(); // No sorting if no column is selected
-  //   return users().sort((a, b) => {
-  //     const aValue = a[this.sortColumn];
-  //     const bValue = b[this.sortColumn];
+  sortTable = () => {
+    console.log("🚀 ~ UserTableComponent ~ sortTable:")
+    this.users.set(this.users().sort((a, b) => {
+      const column = this.sortColumn(); // Get the current sort column
+      const direction = this.sortDirection(); // Get the current sort direction
 
-  //     if (aValue < bValue) return this.sortDirection() === 'asc' ? -1 : 1;
-  //     if (aValue > bValue) return this.sortDirection() === 'asc' ? 1 : -1;
-  //     return 0;
-  //   });
-  // }
+      if (a[column] < b[column]) {
+        return direction === "asc" ? -1 : 1; // Ascending or descending
+      }
+      if (a[column] > b[column]) {
+        return direction === "asc" ? 1 : -1; // Ascending or descending
+      }
+      return 0; // Equal values
+    }));
+  }
 
   // Change page
   changePage(page: number) {
