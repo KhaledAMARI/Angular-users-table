@@ -1,16 +1,47 @@
-.sort-arrow {
-  display: inline flow-root list-item;
-    width: 7px;
-    height: 10px;
-    margin-left: 2px;
-    background-color: white;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  }
-  
   .sort-arrow.asc {
     transform: rotate(0deg);
   }
   
   .sort-arrow.desc {
     transform: rotate(180deg);
+  }
+  
+  .sort-controls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px; /* Space below the controls */
+  }
+
+  .sort-controls select {
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    padding: 8px 12px; /* Padding inside the select */
+    margin-right: 10px; /* Space between selects */
+    transition: border-color 0.3s; /* Smooth transition */
+  }
+
+  .sort-controls select:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+  }
+
+  .sort-controls button {
+    background-color: #007bff; /* Button background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 10px 20px; /* Padding inside the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
+    font-size: 16px; /* Font size */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+  }
+
+  .sort-controls button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+  }
+
+  .sort-controls button:active {
+    transform: translateY(0); /* Reset lift effect on click */
   }

@@ -35,6 +35,21 @@
     </div>
   </div>
 
+  <div class="sort-controls">
+    <select [value]="sortColumn()">
+      <option *ngFor="let header of tableHeaders" [value]="header">
+        {{ header }}
+      </option>
+    </select>
+
+    <select [value]="sortDirection()">
+      <option value="asc">Asc</option>
+      <option value="desc">Desc</option>
+    </select>
+
+    <button (click)="sortTable()">Sort</button>
+  </div>
+
   <table class="min-w-full bg-white border border-gray-300">
     <thead class="bg-gray-800 text-white">
       <tr>
@@ -43,132 +58,60 @@
           class="w-max cursor-pointer py-2 px-4 border-b"
         >
           ID
-          <span
-            class="sort-arrow"
-            [ngClass]="{
-              asc: sortColumn() === 'id' && sortDirection() === 'asc',
-              desc: sortColumn() === 'id' && sortDirection() === 'desc'
-            }"
-          ></span>
         </th>
         <th
           (click)="sortBy('firstName')"
           class="w-max cursor-pointer py-2 px-4 border-b"
         >
           First Name
-          <span
-            class="sort-arrow"
-            [ngClass]="{
-              asc: sortColumn() === 'firstName' && sortDirection() === 'asc',
-              desc: sortColumn() === 'firstName' && sortDirection() === 'desc'
-            }"
-          ></span>
         </th>
         <th
           (click)="sortBy('lastName')"
           class="w-max cursor-pointer py-2 px-4 border-b"
         >
           Last Name
-          <span
-            class="sort-arrow"
-            [ngClass]="{
-              asc: sortColumn() === 'lastName' && sortDirection() === 'asc',
-              desc: sortColumn() === 'lastName' && sortDirection() === 'desc'
-            }"
-          ></span>
         </th>
         <th
           (click)="sortBy('age')"
           class="w-max cursor-pointer py-2 px-4 border-b"
         >
           Age
-          <span
-            class="sort-arrow"
-            [ngClass]="{
-              asc: sortColumn() === 'age' && sortDirection() === 'asc',
-              desc: sortColumn() === 'age' && sortDirection() === 'desc'
-            }"
-          ></span>
         </th>
         <th
           (click)="sortBy('dob')"
           class="w-max cursor-pointer py-2 px-4 border-b"
         >
           DOB
-          <span
-            class="sort-arrow"
-            [ngClass]="{
-              asc: sortColumn() === 'dob' && sortDirection() === 'asc',
-              desc: sortColumn() === 'dob' && sortDirection() === 'desc'
-            }"
-          ></span>
         </th>
         <th
           (click)="sortBy('email')"
           class="w-max cursor-pointer py-2 px-4 border-b"
         >
           Email
-          <span
-            class="sort-arrow"
-            [ngClass]="{
-              asc: sortColumn() === 'email' && sortDirection() === 'asc',
-              desc: sortColumn() === 'email' && sortDirection() === 'desc'
-            }"
-          ></span>
         </th>
         <th
           (click)="sortBy('salary')"
           class="w-max cursor-pointer py-2 px-4 border-b"
         >
           Salary
-          <span
-            class="sort-arrow"
-            [ngClass]="{
-              asc: sortColumn() === 'salary' && sortDirection() === 'asc',
-              desc: sortColumn() === 'salary' && sortDirection() === 'desc'
-            }"
-          ></span>
         </th>
         <th
           (click)="sortBy('address')"
           class="w-max cursor-pointer py-2 px-4 border-b"
         >
           Address
-          <span
-            class="sort-arrow"
-            [ngClass]="{
-              asc: sortColumn() === 'address' && sortDirection() === 'asc',
-              desc: sortColumn() === 'address' && sortDirection() === 'desc'
-            }"
-          ></span>
         </th>
         <th
           (click)="sortBy('contactNumber')"
           class="w-max cursor-pointer py-2 px-4 border-b"
         >
           Contact Number
-          <span
-            class="sort-arrow"
-            [ngClass]="{
-              asc:
-                sortColumn() === 'contactNumber' && sortDirection() === 'asc',
-              desc:
-                sortColumn() === 'contactNumber' && sortDirection() === 'desc'
-            }"
-          ></span>
         </th>
         <th
           class="w-max py-2 px-4 border-b cursor-pointer"
           (click)="sortBy('image')"
         >
           Image
-          <span
-            class="sort-arrow"
-            [ngClass]="{
-              asc: sortColumn() === 'image' && sortDirection() === 'asc',
-              desc: sortColumn() === 'image' && sortDirection() === 'desc'
-            }"
-          ></span>
         </th>
         <th class="w-max py-2 px-4 border-b">Actions</th>
       </tr>
@@ -192,7 +135,7 @@
           <img
             [src]="user.imageUrl"
             alt="{{ user.firstName }}"
-            class="rounded-full w-20 h-20"
+            class="rounded-full w-20 h-20 flex justify-center items-center"
           />
         </td>
         <td class="py-2 px-4 border-b">
