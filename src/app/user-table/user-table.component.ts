@@ -41,6 +41,8 @@ export class UserTableComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
       console.log('changes happened!');
+      console.log(this.sortDirection());
+      console.log(this.sortColumn());
   }
 
   fetchData() {
@@ -59,11 +61,7 @@ export class UserTableComponent implements OnInit, DoCheck {
     this.searchTerm.update(value => String(inputElement.value));
   }
 
-  // Get the users() for the current page
-  paginatedUsers = computed(() => {
-    const startIndex = computed(() => (this.currentPage() - 1) * this.itemsPerPage());
-    const endIndex = computed(() => startIndex() + this.itemsPerPage());
-    if (this.searchTerm()) {
+  filterByGlobalSearch = (startIndex: number, endIndex: number) => {
       return this.users().filter(user => (
         user?.firstName?.toLowerCase().includes(this.searchTerm().toLowerCase()) ||
         user?.lastName?.toLowerCase().includes(this.searchTerm().toLowerCase()) ||
@@ -73,27 +71,39 @@ export class UserTableComponent implements OnInit, DoCheck {
         String(user?.contactNumber)?.toLowerCase().includes(this.searchTerm().toLowerCase()) ||
         String(user?.id)?.toLowerCase().includes(this.searchTerm().toLowerCase()) ||
         String(user?.age)?.toLowerCase().includes(this.searchTerm().toLowerCase())
-      )).slice(startIndex(), endIndex());
+      )).slice(startIndex, endIndex);
+  }
+
+    // Sort users() based on the selected column and direction
+    sortTable = computed(() => {
+      console.log("🚀 ~ UserTableComponent ~ sortTable:")
+      return this.users().sort((a, b) => {
+        const column = this.sortColumn(); // Get the current sort column
+        const direction = this.sortDirection(); // Get the current sort direction
+  
+        if (a[column] < b[column]) {
+          return direction === "asc" ? -1 : 1; // Ascending or descending
+        }
+        if (a[column] > b[column]) {
+          return direction === "asc" ? 1 : -1; // Ascending or descending
+        }
+        return 0; // Equal values
+      });
+    })
+
+  // Get the users() for the current page
+  paginatedUsers = computed(() => {
+    const startIndex = computed(() => (this.currentPage() - 1) * this.itemsPerPage());
+    const endIndex = computed(() => startIndex() + this.itemsPerPage());
+    if (this.searchTerm()) {
+      this.filterByGlobalSearch(startIndex(), endIndex());
+    }
+    if (this.sortColumn() && this.sortDirection()) {
+      this.sortTable();
     }
     return this.users().slice(startIndex(), endIndex());
+
   });
-
-  // Sort users() based on the selected column and direction
-  sortTable = () => {
-    console.log("🚀 ~ UserTableComponent ~ sortTable:")
-    this.users.set(this.users().sort((a, b) => {
-      const column = this.sortColumn(); // Get the current sort column
-      const direction = this.sortDirection(); // Get the current sort direction
-
-      if (a[column] < b[column]) {
-        return direction === "asc" ? -1 : 1; // Ascending or descending
-      }
-      if (a[column] > b[column]) {
-        return direction === "asc" ? 1 : -1; // Ascending or descending
-      }
-      return 0; // Equal values
-    }));
-  }
 
   // Change page
   changePage(page: number) {
@@ -155,4 +165,15 @@ export class UserTableComponent implements OnInit, DoCheck {
     this.closeModal();
     this.userForm.reset();
   }
+
+  handleSortDirectionChange = () => {
+    this.sortDirection.update(value => value === "asc" ? "desc" : "asc");
+  }
+
+  handleSortColumnChange = (event: Event) => {
+    const element = event.target as HTMLSelectElement;
+    this.sortColumn.set(element.value);
+  }
 }
+
+

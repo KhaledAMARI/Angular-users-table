@@ -36,18 +36,16 @@
   </div>
 
   <div class="sort-controls">
-    <select [value]="sortColumn()">
+    <select [value]="sortColumn()" (change)="handleSortColumnChange($event)">
       <option *ngFor="let header of tableHeaders" [value]="header">
         {{ header }}
       </option>
     </select>
 
-    <select [value]="sortDirection()">
+    <select [value]="sortDirection()" (change)="handleSortDirectionChange()">
       <option value="asc">Asc</option>
       <option value="desc">Desc</option>
     </select>
-
-    <button (click)="sortTable()">Sort</button>
   </div>
 
   <table class="min-w-full bg-white border border-gray-300">
@@ -164,7 +162,7 @@
   </table>
 
   <!-- Pagination Controls -->
-  <nav aria-label="Page navigation" class="mt-4">
+  <nav aria-label="Page navigation" class="my-10">
     <ul class="flex justify-center space-x-2">
       <li [class.disabled]="currentPage() === 1">
         <button
